@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Nova Interactive Device Demo</title>
+	<link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Open+Sans:600'>
+	<link rel="stylesheet" href="ui.css">
+  <script src="interactions.js"></script>
+</head>
+
+<body>
+  <p>To see data sent from the device to the cloud go to https://www.glitchwebsite.com</p>
+  <hr>
+
+  <section>
+    <h3>Easily send data to the cloud through cellular</h3>
+    <button id="sendData" type="button">Send data "Hello Nova"</button>
+    <div class="code-block">
+      ## Abbreviated python code
+      hologram.sendMessage("Hello Nova")
+    </div>
+  </section>
+
+  <section>
+    <h3>If you prefer SMS you can do that too!</h3>
+    <input>Phone Number</input>
+    <button id="sendSMS" type="button">Send SMS "Hello Nova"</button>
+    <div class="code-block">
+      ## Abbreviated python code
+      hologram.sendSMS("+11234567890", "Hello Nova")
+    </div>
+  </section>
+
+  <section>
+    <h3>Respond to the SMS and see it appear</h3>
+    <div>waiting for reply...</div>
+    <div class="code-block">
+      ## Abbreviated python code
+      hologram.enableSMS()
+      hologram.popReceivedSMS()
+    </div>
+  </section>
+
+  <section>
+    <h3>Example dashboard</h3>
+    <button id="sendSensor" type="button">Send data to your dashboard</button>
+    <p>Check out your custom dashboard here</p>
+    <div class="code-block">
+      ## Abbreviated python code
+      sensors = psutil.sensors_temperatures()
+      coretemp = sensors.coretmp[0].current
+      location = hologram.network.location()
+      data = json.dumps({"lat": location.latitude, "lon": "lat": location.longitude, "temperature": coretemp})
+
+      hologram.sendMessage(data)
+    </div>
+  </section>
+
+  <p>Curious how this all works? Login to Hologram's dat router</p>
+  https://dashboard.hologram.io/routes
+
+
+</body>
+</html>
