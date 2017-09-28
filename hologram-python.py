@@ -1,9 +1,28 @@
 ##from Hologram.HologramCloud import HologramCloud ## Import Hologram cloud library
 import json ## Import library to create and read JSON
 import time ## Allows us to use 'sleep'
-import sys
+from Hologram.HologramCloud import HologramCloud
 
-##hologram = HologramCloud(dict(), network='cellular', enable_inbound=False)
+device_key = raw_input("What is your device key? ")
+destination_number = raw_input("What is your destination number? ")
+credentials = {'devicekey': device_key}
+
+hologram = HologramCloud(credentials, network='cellular')
+
+def handle_polling(timeout, fx, delay_interval=20):
+    try:
+        if timeout != -1:
+            print 'waiting for ' + str(timeout) + ' seconds...'
+            end = time.time() + timeout
+            while time.time() < end:
+                fx()
+                time.sleep(delay_interval)
+        else:
+            while True:
+                fx()
+                time.sleep(delay_interval)
+    except KeyboardInterrupt as e:
+        sys.exit(e)
 
 # FUNCTIONS
 def convert_location_into_json(location_obj):
@@ -20,37 +39,53 @@ def run_modem_location():
     else:
         return convert_location_into_json(location_obj)
 
-def received_sms():
-  print "Received SMS"
-  ##sms_obj = hologram.popReceivedSMS()
-  ##print sms_obj.message
-  return sms_obj.message
+def popReceivedSMS():
+    print 'POP RECEIVED SMS'
+    sms_obj = hologram.popReceivedSMS()
+
+    if sms_obj is not None:
+        print 'sender:', sms_obj.sender
+        print sms_obj.timestamp.strftime('%c')
+        print u'message:', sms_obj.message
+
+def receiveSMS():
+    print 'RECEIVE SMS'
+    hologram.network.connect()
+
+    hologram.event.subscribe('sms.received', popReceivedSMS)
+
+    hologram.enableSMS()
+
+    handle_polling(20, popReceivedSMS, 1)
+
+    hologram.disableSMS()
+
+    hologram.network.disconnect()
 
 def start():
     print 'PYTHON STARTED'
-    ##hologram.network.connect()
 
 def sendData():
 	print 'PYTHON SEND'
     ##hologram.sendMessage("Hello Nova")
     ##hologram.disableSMS()
 
-def sendSMS(phoneNum):
-	print 'PYTHON SMS'
-    print phoneNum
-    ##hologram.enableSMS()
-    ##hologram.sendSMS(phoneNum, "Hello Nova")
-    ##hologram.event.subscribe('sms.received', received_sms)
+def sendSMS(destination_number):
+    hologram.network.connect()
+    hologram.sendSMS(destination_number, "Hello Nova")
+    hologram.network.disconnect()
 
 def sendSensor():
 	print 'PYTHON SENSOR'
     ##hologram.disableSMS()
 	exit()
 
-
 # CODE
 
 start()
+
+sendSMS(destination_number)
+receiveSMS()
 
 while True:
     line = sys.stdin.readline()
