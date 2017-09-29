@@ -28,6 +28,8 @@ function spawnChildIfNeeded() {
       if(data.startsWith("Done")) {
           curStatusBox.innerText = "Done";
       } else if(data.startsWith("Got SMS:")) {
+          sms = data.substr(8);
+          document.getElementById('sms-recv-box').innerText = sms;
       }
     });
 
@@ -56,7 +58,7 @@ function launchPython(evt) {
     } else if(command == "send-sms-form"){
         myConsole.log('\x1b[34m%s\x1b[0m','INTERACTION IN JS');
 
-        curStatusBox = document.getElementById('sendDataStatus');
+        curStatusBox = document.getElementById('sendSMSStatus');
         phone = document.getElementById('phone').value;
 
         myConsole.log('\x1b[34m%s\x1b[0m',phone);
@@ -65,7 +67,7 @@ function launchPython(evt) {
     } else if(command == "sendSensor"){
         myConsole.log('\x1b[34m%s\x1b[0m','EXIT IN JS');
 
-        curStatusBox = document.getElementById('sendDataStatus');
+        curStatusBox = document.getElementById('sendSensorStatus');
 
         child.stdin.write("sendSensor\n");
     }

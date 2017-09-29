@@ -24,6 +24,7 @@
 	    <h3>Send Data to the Cloud</h3>
 			<p>Easily send data to the cloud through cellular. Clicking the button below will send a message to our cloud. Go to the online dashboard from another computer <span class="link">dashboard.hologram.io/?drawer=full</span>.</p>
 	    <button id="sendData" type="button">Send data "Hello Nova"</button>
+            <div id='sendDataStatus'></div>
 	    <div class="code-block">
 	      <p class="grey">## Example of the code running now</p>
 	      <p class="code">
@@ -41,6 +42,7 @@
 		    <input type="text" name="phone" id='phone' placeholder="Your Mobile Number">
 		    <input type="submit" value='Send SMS "Hello Nova"'>
 			</form>
+            <div id='sendSMSStatus'></div>
 	    <div class="code-block">
 	      <p class="grey">## Example of the code running now</p>
 	      <p class="code">
@@ -53,8 +55,8 @@
 
 	  <section>
 	    <h3>Receive Inbound SMS/Data</h3>
-			<div class="dynamic-text">
-		    <p>{{inboundMessage}}</p>
+			<div class="dynamic-text" id="sms-recv-box">
+		    <p></p>
 			</div>
 	    <div class="code-block">
 	      <p class="grey">## Example of the code running now</p>
