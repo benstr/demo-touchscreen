@@ -2,100 +2,114 @@
 import json ## Import library to create and read JSON
 import time ## Allows us to use 'sleep'
 from Hologram.HologramCloud import HologramCloud
+import sys
+import logging
 
-device_key = raw_input("What is your device key? ")
-destination_number = raw_input("What is your destination number? ")
-credentials = {'devicekey': device_key}
+#logging.basicConfig(level=logging.DEBUG)
 
-hologram = HologramCloud(credentials, network='cellular')
 
-def handle_polling(timeout, fx, delay_interval=20):
-    try:
-        if timeout != -1:
-            print 'waiting for ' + str(timeout) + ' seconds...'
-            end = time.time() + timeout
-            while time.time() < end:
-                fx()
-                time.sleep(delay_interval)
+class HologramDemo(object):
+
+    def __init__(self):
+        with open('/home/pi/credentials.json', 'r') as f:
+            self.credentials = json.load(f)
+            self.init_hologram()
+
+    def init_hologram(self):
+        self.hologram = HologramCloud(self.credentials, network='cellular',
+                authentication_type='csrpsk')
+
+    def handle_polling(timeout, fx, delay_interval=20):
+        try:
+            if timeout != -1:
+                print 'waiting for ' + str(timeout) + ' seconds...'
+                end = time.time() + timeout
+                while time.time() < end:
+                    fx()
+                    time.sleep(delay_interval)
+            else:
+                while True:
+                    fx()
+                    time.sleep(delay_interval)
+        except KeyboardInterrupt as e:
+            sys.exit(e)
+
+    # FUNCTIONS
+    def convert_location_into_json(location_obj):
+        location_list = ['date', 'time', 'latitude', 'longitude', 'altitude', 'uncertainty']
+        response_list = [location_obj.date, location_obj.time, location_obj.latitude,
+                         location_obj.longitude, location_obj.altitude, location_obj.uncertainty]
+        location_data = dict(zip(location_list, response_list))
+        return json.dumps(location_data)
+
+    def run_modem_location(self):
+        location_obj = hologram.network.location
+        if location_obj is None:
+            return 'NA'
         else:
-            while True:
-                fx()
-                time.sleep(delay_interval)
-    except KeyboardInterrupt as e:
-        sys.exit(e)
+            return convert_location_into_json(location_obj)
 
-# FUNCTIONS
-def convert_location_into_json(location_obj):
-    location_list = ['date', 'time', 'latitude', 'longitude', 'altitude', 'uncertainty']
-    response_list = [location_obj.date, location_obj.time, location_obj.latitude,
-                     location_obj.longitude, location_obj.altitude, location_obj.uncertainty]
-    location_data = dict(zip(location_list, response_list))
-    return json.dumps(location_data)
+    def popReceivedSMS(self):
+        print 'POP RECEIVED SMS'
+        sms_obj = hologram.popReceivedSMS()
 
-def run_modem_location():
-    location_obj = hologram.network.location
-    if location_obj is None:
-        return 'NA'
-    else:
-        return convert_location_into_json(location_obj)
+        if sms_obj is not None:
+            print 'sender:', sms_obj.sender
+            print sms_obj.timestamp.strftime('%c')
+            print u'message:', sms_obj.message
 
-def popReceivedSMS():
-    print 'POP RECEIVED SMS'
-    sms_obj = hologram.popReceivedSMS()
+    def receiveSMS(self):
+        print 'RECEIVE SMS'
+        hologram.network.connect()
 
-    if sms_obj is not None:
-        print 'sender:', sms_obj.sender
-        print sms_obj.timestamp.strftime('%c')
-        print u'message:', sms_obj.message
+        hologram.event.subscribe('sms.received', popReceivedSMS)
 
-def receiveSMS():
-    print 'RECEIVE SMS'
-    hologram.network.connect()
+        hologram.enableSMS()
 
-    hologram.event.subscribe('sms.received', popReceivedSMS)
+        handle_polling(20, popReceivedSMS, 1)
 
-    hologram.enableSMS()
+        hologram.disableSMS()
 
-    handle_polling(20, popReceivedSMS, 1)
+        hologram.network.disconnect()
 
-    hologram.disableSMS()
+    def start(self):
+        print 'PYTHON STARTED'
 
-    hologram.network.disconnect()
+    def sendData(self):
+        print('Sending data to cloud')
+        self.hologram.network.connect()
+        self.hologram.sendMessage('Hello Nova')
+        self.hologram.network.disconnect()
+        print('Data Sent')
 
-def start():
-    print 'PYTHON STARTED'
+    def sendSMS(self, destination_number):
+        print('Sending SMS to %s'%destination_number)
+        self.hologram.network.connect()
+        self.hologram.sendSMS(destination_number, "Hello Nova")
+        self.hologram.network.disconnect()
+        print('SMS Sent')
 
-def sendData():
-	print 'PYTHON SEND'
-    ##hologram.sendMessage("Hello Nova")
-    ##hologram.disableSMS()
+    def sendSensor(self):
+            print 'PYTHON SENSOR'
+        ##hologram.disableSMS()
+            exit()
 
-def sendSMS(destination_number):
-    hologram.network.connect()
-    hologram.sendSMS(destination_number, "Hello Nova")
-    hologram.network.disconnect()
+    def demoLoop(self):
+        print("Starting Demo")
+        while True:
+            line = sys.stdin.readline()
+            if line == "sendData\n":
+                self.sendData()
+            elif line == "sendSMS\n":
+                secondLine = sys.stdin.readline()
+                print secondLine
+                self.sendSMS(secondLine.rstrip())
+            elif line == "sendSensor\n":
+                self.sendSensor()
+            else:
+                print 'dunno'
 
-def sendSensor():
-	print 'PYTHON SENSOR'
-    ##hologram.disableSMS()
-	exit()
 
-# CODE
+h = HologramDemo()
+h.demoLoop()
 
-start()
-
-sendSMS(destination_number)
-receiveSMS()
-
-while True:
-    line = sys.stdin.readline()
-    if line == "sendData\n":
-    	sendData()
-    elif line == "sendSMS\n":
-        secondLine = sys.stdin.readline()
-        print secondLine
-    	sendSMS(secondLine)
-    elif line == "sendSensor\n":
-    	sendSensor()
-    else:
-    	print 'dunno'

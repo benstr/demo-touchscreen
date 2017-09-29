@@ -1,0 +1,11 @@
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+*.un~
+Session.vim
+.netrwhist
+*~
+vendor
+includes/config.php
+includes/config_ut_override.php
+tags
+tests/coverage/
