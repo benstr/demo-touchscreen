@@ -1,3 +1,4 @@
+const {shell} = require('electron');
 var path = require('path');
 var sys = require('sys');
 var exec = require('child_process').exec;

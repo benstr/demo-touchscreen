@@ -9,58 +9,60 @@
 </head>
 
 <body>
-	<h1>Introducing the Hologram Nova</h1>
-  <p>The Nova is an open-sourced USB modem made for IoT Engineers and Makers. Below is a quick demo showcasing how easy it is for developers to connect their projects to the web with the Nova. To see data sent from the device to the cloud go to https://www.glitchwebsite.com</p>
+	<h1 align="center">Introducing the Hologram Nova</h1>
+  <p>The Nova is an open-sourced USB modem made for IoT Engineers and Makers. Nova is the first solution to make cellular easy for Single Board Computers. Below is a quick demo showcasing the most common uses.</p>
+	<br/>
+	<p>To see data sent from this device to the cloud go to <span class="link">dashboard.hologram.io/?drawer=full</span> from another computer (credentials should have been emailed).</p>
+	<br/>
+	<p>Note: make sure to plug in the Nova USB before clicking any buttons below. Wait until Nove has a solid blue LED and a blinking red LED.</p>
   <hr>
 
   <section>
     <h3>Send Data to the Cloud</h3>
-		<p>Easily send data to the cloud through cellular</p>
+		<p>Easily send data to the cloud through cellular. Clicking the button below will send a message to our cloud. Go to the online dashboard from another computer <span class="link">dashboard.hologram.io/?drawer=full</span>.</p>
     <button id="sendData" type="button">Send data "Hello Nova"</button>
     <div class="code-block">
-      <p class="comment">## Abbreviated python code</p>
-      <p class="code">hologram.sendMessage("Hello Nova")</p>
+      <p class="grey">## Example of the code running now</p>
+      <p class="code">
+				<span class="pink">hologram</span><span class="blue">.sendMessage( <span class="green">"Hello Nova"</span> )</span>
+			</p>
     </div>
   </section>
+
+	<hr/>
 
   <section>
-    <h3>If you prefer SMS you can do that too!</h3>
-    <input>Phone Number</input>
-    <button id="sendSMS" type="button">Send SMS "Hello Nova"</button>
+    <h3>Send SMS to Your Phone</h3>
+		<p>Enter your number below to send yourself a text message. In the next step below you'll respond to the message and see it appear.</p>
+		<form id="send-sms-form">
+	    <input type="text" name="phone" placeholder="Your Mobile Number">
+	    <input type="submit" value='Send SMS "Hello Nova"'>
+		</form>
     <div class="code-block">
-      <p class="comment">## Abbreviated python code</p>
-      <p class="code">hologram.sendSMS("+11234567890", "Hello Nova")</p>
+      <p class="grey">## Example of the code running now</p>
+      <p class="code">
+				<span class="pink">hologram</span><span class="blue">.sendSMS( <span class="green">"+11234567890"</span> <span class="white">,</span> <span class="green">"Hello Nova"</span> )</span>
+			</p>
     </div>
   </section>
+
+	<hr/>
 
   <section>
-    <h3>Respond to the SMS and see it appear</h3>
-    <div>waiting for reply...</div>
+    <h3>Receive Inbound SMS/Data</h3>
+		<div class="dynamic-text">
+	    <p>waiting for reply...</p>
+		</div>
     <div class="code-block">
-      <p class="comment">## Abbreviated python code</p>
-      <p class="code">hologram.enableSMS()</p>
-      <p class="code">hologram.popReceivedSMS()</p>
+      <p class="grey">## Example of the code running now</p>
+      <p class="code">
+				<span class="pink">hologram</span><span class="blue">.enableSMS()</span>
+			</p>
+      <p class="code">
+				<span class="pink">hologram</span><span class="blue">.popReceivedSMS()</span>
+			</p>
     </div>
   </section>
-
-  <section>
-    <h3>Example dashboard</h3>
-    <button id="sendSensor" type="button">Send data to your dashboard</button>
-    <p>Check out your custom dashboard here</p>
-    <div class="code-block">
-      <p class="comment">## Abbreviated python code</p>
-      <p class="code">sensors = psutil.sensors_temperatures()</p>
-      <p class="code">coretemp = sensors.coretmp[0].current</p>
-      <p class="code">location = hologram.network.location()</p>
-      <p class="code">data = json.dumps({"lat": location.latitude, "lon": "lat": location.longitude, "temperature": coretemp})</p>
-			<br>
-      <p class="code">hologram.sendMessage(data)</p>
-    </div>
-  </section>
-
-  <p>Curious how this all works? Login to Hologram's dat router</p>
-  https://dashboard.hologram.io/routes
-
 
 </body>
 </html>

@@ -6,20 +6,48 @@ body {
 
 h1, h2, h3, h4 {
   color: #596CFB;
+  font-weight: lighter;
+}
+
+h1 {
+  font-weight: lighter;
 }
 
 p {
   padding: 0;
   margin: 0;
+  line-height: 160%;
 }
 
-button {
+p .link {
+  border: 1px #E1E1E8 solid;
+  background-color: #F7F7F9;
+  color: #D72C40;
+  padding: 4px 6px;
+  font-size: 90%;
+}
+
+.dynamic-text {
+  border: 1px #E1E1E8 dashed;
+  background-color: #FFF;
+  border-radius: 6px;
+  color: #D72C40;
+  padding: 14px 10px;
+  margin-bottom: 20px;
+}
+
+input[type='text'] {
+  font-size:12px;
+  padding:10px 16px;
+  margin: 14px 0px;
+  border-radius: 5px;
+  min-width: 300px;
+}
+
+button, input[type='submit'] {
   align-items: center;
   background-color: rgb(4, 192, 255);
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
+  border-radius: 5px;
   border-width: 0;
   box-sizing: border-box;
   color: rgba(255, 255, 255, 0.9);
@@ -41,6 +69,7 @@ button {
 }
 
 .code-block {
+  font-family: monospace, sans-serif;
   background-color: #181D22;
   padding: 15px 20px;
   color: #BAC5C8;
@@ -48,10 +77,22 @@ button {
   border-radius: 6px;
 }
 
-.code-block .comment {
+.code-block .white {
+  color: #FFF;
+}
+
+.code-block .grey {
   color: #919396;
 }
 
-.code-block .code {
-  color: #FFF;
+.code-block .pink {
+  color: #F54784;
+}
+
+.code-block .blue {
+  color: #04C0FF;
+}
+
+.code-block .green {
+  color: #4EBC6B;
 }
