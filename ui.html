@@ -3,66 +3,69 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Nova Interactive Device Demo</title>
-	<link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Open+Sans:600'>
 	<link rel="stylesheet" href="ui.css">
+	<script src="vue.js"></script>
+	<script src="reactive.js"></script>
   <script src="interactions.js"></script>
+	<!-- <script type="x-template" id="todo-component"> -->
 </head>
 
 <body>
-	<h1 align="center">Introducing the Hologram Nova</h1>
-  <p>The Nova is an open-sourced USB modem made for IoT Engineers and Makers. Nova is the first solution to make cellular easy for Single Board Computers. Below is a quick demo showcasing the most common uses.</p>
-	<br/>
-	<p>To see data sent from this device to the cloud go to <span class="link">dashboard.hologram.io/?drawer=full</span> from another computer (credentials should have been emailed).</p>
-	<br/>
-	<p>Note: make sure to plug in the Nova USB before clicking any buttons below. Wait until Nove has a solid blue LED and a blinking red LED.</p>
-  <hr>
+	<div id="nova-demo-component">
+		<h1 align="center">Introducing the Hologram Nova</h1>
+	  <p>The Nova is an open-sourced USB modem made for IoT Engineers and Makers. Nova is the first solution to make cellular easy for Single Board Computers. Below is a quick demo showcasing the most common uses.</p>
+		<br/>
+		<p>To see data sent from this device to the cloud go to <span class="link">dashboard.hologram.io/?drawer=full</span> from another computer (credentials should have been emailed).</p>
+		<br/>
+		<p>Note: make sure to plug in the Nova USB before clicking any buttons below. Wait until Nove has a solid blue LED and a blinking red LED.</p>
+	  <hr>
 
-  <section>
-    <h3>Send Data to the Cloud</h3>
-		<p>Easily send data to the cloud through cellular. Clicking the button below will send a message to our cloud. Go to the online dashboard from another computer <span class="link">dashboard.hologram.io/?drawer=full</span>.</p>
-    <button id="sendData" type="button">Send data "Hello Nova"</button>
-    <div class="code-block">
-      <p class="grey">## Example of the code running now</p>
-      <p class="code">
-				<span class="pink">hologram</span><span class="blue">.sendMessage( <span class="green">"Hello Nova"</span> )</span>
-			</p>
-    </div>
-  </section>
+	  <section>
+	    <h3>Send Data to the Cloud</h3>
+			<p>Easily send data to the cloud through cellular. Clicking the button below will send a message to our cloud. Go to the online dashboard from another computer <span class="link">dashboard.hologram.io/?drawer=full</span>.</p>
+	    <button id="sendData" type="button">Send data "Hello Nova"</button>
+	    <div class="code-block">
+	      <p class="grey">## Example of the code running now</p>
+	      <p class="code">
+					<span class="pink">hologram</span><span class="blue">.sendMessage( <span class="green">"Hello Nova"</span> )</span>
+				</p>
+	    </div>
+	  </section>
 
-	<hr/>
+		<hr/>
 
-  <section>
-    <h3>Send SMS to Your Phone</h3>
-		<p>Enter your number below to send yourself a text message. In the next step below you'll respond to the message and see it appear.</p>
-		<form id="send-sms-form">
-	    <input type="text" name="phone" placeholder="Your Mobile Number">
-	    <input type="submit" value='Send SMS "Hello Nova"'>
-		</form>
-    <div class="code-block">
-      <p class="grey">## Example of the code running now</p>
-      <p class="code">
-				<span class="pink">hologram</span><span class="blue">.sendSMS( <span class="green">"+11234567890"</span> <span class="white">,</span> <span class="green">"Hello Nova"</span> )</span>
-			</p>
-    </div>
-  </section>
+	  <section>
+	    <h3>Send SMS to Your Phone</h3>
+			<p>Enter your number below to send yourself a text message. In the next step below you'll respond to the message and see it appear.</p>
+			<form id="send-sms-form">
+		    <input type="text" name="phone" placeholder="Your Mobile Number">
+		    <input type="submit" value='Send SMS "Hello Nova"'>
+			</form>
+	    <div class="code-block">
+	      <p class="grey">## Example of the code running now</p>
+	      <p class="code">
+					<span class="pink">hologram</span><span class="blue">.sendSMS( <span class="green">"+11234567890"</span> <span class="white">,</span> <span class="green">"Hello Nova"</span> )</span>
+				</p>
+	    </div>
+	  </section>
 
-	<hr/>
+		<hr/>
 
-  <section>
-    <h3>Receive Inbound SMS/Data</h3>
-		<div class="dynamic-text">
-	    <p>waiting for reply...</p>
-		</div>
-    <div class="code-block">
-      <p class="grey">## Example of the code running now</p>
-      <p class="code">
-				<span class="pink">hologram</span><span class="blue">.enableSMS()</span>
-			</p>
-      <p class="code">
-				<span class="pink">hologram</span><span class="blue">.popReceivedSMS()</span>
-			</p>
-    </div>
-  </section>
-
+	  <section>
+	    <h3>Receive Inbound SMS/Data</h3>
+			<div class="dynamic-text">
+		    <p>{{inboundMessage}}</p>
+			</div>
+	    <div class="code-block">
+	      <p class="grey">## Example of the code running now</p>
+	      <p class="code">
+					<span class="pink">hologram</span><span class="blue">.enableSMS()</span>
+				</p>
+	      <p class="code">
+					<span class="pink">hologram</span><span class="blue">.popReceivedSMS()</span>
+				</p>
+	    </div>
+	  </section>
+	</div>
 </body>
 </html>
