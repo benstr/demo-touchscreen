@@ -14,7 +14,7 @@
 	<br/>
 	<p>To see data sent from this device to the cloud go to <span class="link">dashboard.hologram.io/?drawer=full</span> from another computer (credentials should have been emailed).</p>
 	<br/>
-	<p>Note: make sure to plug in the Nova USB before clicking any buttons below. Wait until Nove has a solid blue LED and a blinking red LED.</p>
+	<p>Note: make sure to plug in the Nova USB before clicking any buttons below. Wait until Nova has a solid blue LED and a blinking red LED.</p>
   <hr>
 
   <section>
@@ -27,6 +27,7 @@
 				<span class="pink">hologram</span><span class="blue">.sendMessage( <span class="green">"Hello Nova"</span> )</span>
 			</p>
     </div>
+    <div id='sendDataStatus'></div>
   </section>
 
 	<hr/>
@@ -35,8 +36,8 @@
     <h3>Send SMS to Your Phone</h3>
 		<p>Enter your number below to send yourself a text message. In the next step below you'll respond to the message and see it appear.</p>
 		<form id="send-sms-form">
-	    <input type="text" name="phone" placeholder="Your Mobile Number">
-	    <input type="submit" value='Send SMS "Hello Nova"'>
+	    <input type="text" name="phone" id="phone" placeholder="Your Mobile Number" />
+	    <input type="submit" value='Send SMS "Hello Nova"' />
 		</form>
     <div class="code-block">
       <p class="grey">## Example of the code running now</p>

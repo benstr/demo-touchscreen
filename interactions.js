@@ -3,6 +3,7 @@ var path = require('path');
 var sys = require('sys');
 var exec = require('child_process').exec;
 var child = null;
+var curStatusBox = null;
 
 function spawnChildIfNeeded() {
     if(child != null) {
@@ -24,14 +25,21 @@ function spawnChildIfNeeded() {
       var nodeConsole = require('console');
       var myConsole = new nodeConsole.Console(process.stdout, process.stderr);
       myConsole.log('\x1b[36m%s\x1b[0m', 'PIPED FROM PYTHON PROGRAM: ' + data.toString());
+      if(data.startsWith("Done")) {
+          curStatusBox.innerText = "Done";
+      } else if(data.startsWith("Got SMS:")) {
+      }
     });
 
     child.on('exit', function() {
         child = null;
+        curStatusBox.innerText = "Done";
     });
 }
 
 function launchPython(evt) {
+    if (evt.preventDefault) evt.preventDefault();
+
     var nodeConsole = require('console');
     var myConsole = new nodeConsole.Console(process.stdout, process.stderr);
 
@@ -42,35 +50,33 @@ function launchPython(evt) {
     if (command == "sendData") {
         myConsole.log('\x1b[34m%s\x1b[0m','PRINT BEFORE PYTHON EXEC FROM NODE.JS');
 
-        child.stdin.write("sendData\n");
-        //this is a listener for peers output
-        myConsole.log('\x1b[36m%s\x1b[0m','PIPED FROM PYTHON PROGRAM: ' + data.toString());
+        curStatusBox = document.getElementById('sendDataStatus');
 
-    }else if(command == "sendSMS"){
+        child.stdin.write("sendData\n");
+    } else if(command == "send-sms-form"){
         myConsole.log('\x1b[34m%s\x1b[0m','INTERACTION IN JS');
 
-        child.stdin.write("sendSMS\n+123456");
-        //this is a listener for peers output
-        myConsole.log('\x1b[36m%s\x1b[0m','PIPED FROM PYTHON PROGRAM: ' + data.toString());
+        curStatusBox = document.getElementById('sendDataStatus');
+        phone = document.getElementById('phone').value;
 
-    }else if(command == "sendSensor"){
+        myConsole.log('\x1b[34m%s\x1b[0m',phone);
+
+        child.stdin.write("sendSMS\n"+phone+"\n");
+    } else if(command == "sendSensor"){
         myConsole.log('\x1b[34m%s\x1b[0m','EXIT IN JS');
 
+        curStatusBox = document.getElementById('sendDataStatus');
+
         child.stdin.write("sendSensor\n");
-        //this is a listener for peers output
-        myConsole.log('\x1b[36m%s\x1b[0m','PIPED FROM PYTHON PROGRAM: ' + data.toString());
-
-        //child.stdin.end();
-
-        // var nodeConsole = require('console');
-        // var myConsole = new nodeConsole.Console(process.stdout, process.stderr);
-        // myConsole.log('python terminated from js too');
     }
 
+    curStatusBox.innerText = "Running...";
+
+    return false;
 }
 
 document.addEventListener('DOMContentLoaded', function() {
   document.getElementById("sendData").addEventListener("click", launchPython);
-  document.getElementById("sendSMS").addEventListener("click", launchPython);
+  document.getElementById("send-sms-form").addEventListener("submit", launchPython);
   document.getElementById("sendSensor").addEventListener("click", launchPython);
 })

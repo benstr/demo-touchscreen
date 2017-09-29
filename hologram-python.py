@@ -1,9 +1,12 @@
 ##from Hologram.HologramCloud import HologramCloud ## Import Hologram cloud library
 import json ## Import library to create and read JSON
-import time ## Allows us to use 'sleep'
 from Hologram.HologramCloud import HologramCloud
-import sys
 import logging
+import os
+import select
+import sys
+import time ## Allows us to use 'sleep'
+import traceback
 
 #logging.basicConfig(level=logging.DEBUG)
 
@@ -11,28 +14,17 @@ import logging
 class HologramDemo(object):
 
     def __init__(self):
-        with open('/home/pi/credentials.json', 'r') as f:
+        credsfile = os.path.dirname(os.path.realpath(__file__)) +\
+            '/credentials.json'
+        with open(credsfile, 'r') as f:
             self.credentials = json.load(f)
             self.init_hologram()
 
     def init_hologram(self):
         self.hologram = HologramCloud(self.credentials, network='cellular',
                 authentication_type='csrpsk')
+        self.hologram.enableSMS()
 
-    def handle_polling(timeout, fx, delay_interval=20):
-        try:
-            if timeout != -1:
-                print 'waiting for ' + str(timeout) + ' seconds...'
-                end = time.time() + timeout
-                while time.time() < end:
-                    fx()
-                    time.sleep(delay_interval)
-            else:
-                while True:
-                    fx()
-                    time.sleep(delay_interval)
-        except KeyboardInterrupt as e:
-            sys.exit(e)
 
     # FUNCTIONS
     def convert_location_into_json(location_obj):
@@ -49,28 +41,14 @@ class HologramDemo(object):
         else:
             return convert_location_into_json(location_obj)
 
-    def popReceivedSMS(self):
-        print 'POP RECEIVED SMS'
-        sms_obj = hologram.popReceivedSMS()
+
+
+    def checkForSMS(self):
+        sms_obj = self.hologram.popReceivedSMS()
 
         if sms_obj is not None:
-            print 'sender:', sms_obj.sender
-            print sms_obj.timestamp.strftime('%c')
-            print u'message:', sms_obj.message
+            print u"Got SMS: ", sms_obj.message
 
-    def receiveSMS(self):
-        print 'RECEIVE SMS'
-        hologram.network.connect()
-
-        hologram.event.subscribe('sms.received', popReceivedSMS)
-
-        hologram.enableSMS()
-
-        handle_polling(20, popReceivedSMS, 1)
-
-        hologram.disableSMS()
-
-        hologram.network.disconnect()
 
     def start(self):
         print 'PYTHON STARTED'
@@ -80,14 +58,14 @@ class HologramDemo(object):
         self.hologram.network.connect()
         self.hologram.sendMessage('Hello Nova')
         self.hologram.network.disconnect()
-        print('Data Sent')
+        print('Done')
 
     def sendSMS(self, destination_number):
         print('Sending SMS to %s'%destination_number)
         self.hologram.network.connect()
         self.hologram.sendSMS(destination_number, "Hello Nova")
         self.hologram.network.disconnect()
-        print('SMS Sent')
+        print('Done')
 
     def sendSensor(self):
             print 'PYTHON SENSOR'
@@ -96,18 +74,25 @@ class HologramDemo(object):
 
     def demoLoop(self):
         print("Starting Demo")
-        while True:
-            line = sys.stdin.readline()
-            if line == "sendData\n":
-                self.sendData()
-            elif line == "sendSMS\n":
-                secondLine = sys.stdin.readline()
-                print secondLine
-                self.sendSMS(secondLine.rstrip())
-            elif line == "sendSensor\n":
-                self.sendSensor()
-            else:
-                print 'dunno'
+        try :
+            while True:
+                rd, wr, er = select.select([sys.stdin], [], [], 5)
+                if rd:
+                    line = sys.stdin.readline()
+                    if line == "sendData\n":
+                        self.sendData()
+                    elif line == "sendSMS\n":
+                        secondLine = sys.stdin.readline()
+                        print secondLine
+                        self.sendSMS(secondLine.rstrip())
+                    elif line == "sendSensor\n":
+                        self.sendSensor()
+                    else:
+                        print 'dunno'
+                self.checkForSMS()
+        except Exception:
+            print(traceback.format_exc())
+            self.hologram.network.disconnect()
 
 
 h = HologramDemo()
