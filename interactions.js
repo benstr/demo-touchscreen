@@ -9,12 +9,10 @@ function spawnChildIfNeeded() {
     }
     var nodeConsole = require('console');
     var myConsole = new nodeConsole.Console(process.stdout, process.stderr);
-    myConsole.log('starting python script');
+    myConsole.log('Launching Python');
     
     // EXECUTION OF PYTHON
-    child = exec("python hologram-python.py", function (error, stdout, stderr) {
-      sys.print('stdout: ' + stdout);
-      sys.print('stderr: ' + stderr);
+    child = exec("python -u hologram-python.py", function (error, stdout, stderr) {
       if (error !== null) {
         console.log('exec error: ' + error);
       }
@@ -37,25 +35,24 @@ function launchPython(evt) {
     var myConsole = new nodeConsole.Console(process.stdout, process.stderr);
 
     var command = evt.srcElement.id;
-    myConsole.log(command);
 
     spawnChildIfNeeded();
 
-    if (evt.srcElement.id == "sendData") {
+    if (command == "sendData") {
         myConsole.log('\x1b[34m%s\x1b[0m','PRINT BEFORE PYTHON EXEC FROM NODE.JS');
 
         child.stdin.write("sendData\n");
         //this is a listener for peers output
         myConsole.log('\x1b[36m%s\x1b[0m','PIPED FROM PYTHON PROGRAM: ' + data.toString());
 
-    }else if(evt.srcElement.id == "sendSMS"){
+    }else if(command == "sendSMS"){
         myConsole.log('\x1b[34m%s\x1b[0m','INTERACTION IN JS');
 
         child.stdin.write("sendSMS\n+123456");
         //this is a listener for peers output
         myConsole.log('\x1b[36m%s\x1b[0m','PIPED FROM PYTHON PROGRAM: ' + data.toString());
 
-    }else if(evt.srcElement.id == "sendSensor"){
+    }else if(command == "sendSensor"){
         myConsole.log('\x1b[34m%s\x1b[0m','EXIT IN JS');
 
         child.stdin.write("sendSensor\n");
