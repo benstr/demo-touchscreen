@@ -14,7 +14,7 @@ app.on('ready', () => {
     autoHideMenuBar: true,
     alwaysOnTop: true
 	});
-  // ui.maximize();
+  ui.maximize();
 	ui.loadURL('file://' + __dirname + '/ui.html');
 
 	ui.on('closed', () => {

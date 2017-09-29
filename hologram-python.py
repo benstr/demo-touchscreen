@@ -14,8 +14,9 @@ import traceback
 class HologramDemo(object):
 
     def __init__(self):
-        credsfile = os.path.dirname(os.path.realpath(__file__)) +\
-            '/credentials.json'
+        # credsfile = os.path.dirname(os.path.realpath(__file__)) +\
+        #    '/credentials.json'
+        credfile = '/home/pi/demo-touchscreen/credentials.json'
         with open(credsfile, 'r') as f:
             self.credentials = json.load(f)
             self.init_hologram()
@@ -97,4 +98,3 @@ class HologramDemo(object):
 
 h = HologramDemo()
 h.demoLoop()
-
