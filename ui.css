@@ -2,6 +2,11 @@ body {
   background-color: #F4F6F8;
   color: #293E4F;
   font-family: sans-serif;
+  margin: 0;
+}
+
+#nova-demo-component {
+  margin: 10px;
 }
 
 h1, h2, h3, h4 {
@@ -33,7 +38,7 @@ p .link {
   border-radius: 6px;
   color: #D72C40;
   padding: 14px 10px;
-  margin-bottom: 20px;
+  margin: 20px 0;
 }
 
 input[type='text'] {
@@ -75,6 +80,7 @@ button, input[type='submit'] {
   color: #BAC5C8;
   line-height: 160%;
   border-radius: 6px;
+  margin-bottom: 30px;
 }
 
 .code-block .white {

@@ -11,13 +11,15 @@
 </head>
 
 <body>
+	<img class="intro-image" src="intro.png" alt="intro image">
 	<div id="nova-demo-component">
+
 		<h1 align="center">Introducing the Hologram Nova</h1>
-	  <p>The Nova is an open-sourced USB modem made for IoT Engineers and Makers. Nova is the first solution to make cellular easy for Single Board Computers. Below is a quick demo showcasing the most common uses.</p>
+		<p>Launching October 5th</p>
 		<br/>
-		<p>To see data sent from this device to the cloud go to <span class="link">dashboard.hologram.io/?drawer=full</span> from another computer (credentials should have been emailed).</p>
+		<p>The Nova is an open-sourced USB modem made for IoT Engineers and Makers. Nova is the first solution to make cellular easy for Single Board Computers. Below is a quick demo showcasing the most common uses.</p>
 		<br/>
-		<p>Note: make sure to plug in the Nova USB before clicking any buttons below. Wait until Nova has a solid blue LED and a blinking red LED.</p>
+		<p>Note: Instructions should have been emailed to you. Please follow those steps before proceeding.</p>
 	  <hr>
 
 	  <section>
@@ -33,11 +35,9 @@
 	    </div>
 	  </section>
 
-		<hr/>
-
 	  <section>
 	    <h3>Send SMS to Your Phone</h3>
-			<p>Enter your number below to send yourself a text message. In the next step below you'll respond to the message and see it appear.</p>
+			<p>Enter your number below to send yourself a text message. The number you enter will not be saved. In the next step below you'll respond to the message and see it appear.</p>
 			<form id="send-sms-form">
 		    <input type="text" name="phone" id='phone' placeholder="Your Mobile Number">
 		    <input type="submit" value='Send SMS "Hello Nova"'>
@@ -51,12 +51,11 @@
 	    </div>
 	  </section>
 
-		<hr/>
-
 	  <section>
 	    <h3>Receive Inbound SMS/Data</h3>
+			<p>Nova is currently listening for incoming SMS. Go ahead and reply to the SMS phone number from the previous step. In a few seconds you should see the message appear below.</p>
 			<div class="dynamic-text" id="sms-recv-box">
-		    <p></p>
+		    <p>Waiting for Incoming SMS...</p>
 			</div>
 	    <div class="code-block">
 	      <p class="grey">## Example of the code running now</p>
@@ -68,6 +67,12 @@
 				</p>
 	    </div>
 	  </section>
+
+		<section>
+	    <h3>There's More</h3>
+			<p>This is the end of the demo and only part of what Nova can do. We're looking forward to chatting more about all of Nova's features <span class="link">press@hologram.io</span>.</p>
+	  </section>
 	</div>
+	<img class="outro-image" src="outro.png" alt="outro image">
 </body>
 </html>

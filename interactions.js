@@ -12,7 +12,7 @@ function spawnChildIfNeeded() {
     var nodeConsole = require('console');
     var myConsole = new nodeConsole.Console(process.stdout, process.stderr);
     myConsole.log('Launching Python');
-    
+
     // EXECUTION OF PYTHON
     child = exec("python -u hologram-python.py", function (error, stdout, stderr) {
       if (error !== null) {
@@ -64,12 +64,6 @@ function launchPython(evt) {
         myConsole.log('\x1b[34m%s\x1b[0m',phone);
 
         child.stdin.write("sendSMS\n"+phone+"\n");
-    } else if(command == "sendSensor"){
-        myConsole.log('\x1b[34m%s\x1b[0m','EXIT IN JS');
-
-        curStatusBox = document.getElementById('sendSensorStatus');
-
-        child.stdin.write("sendSensor\n");
     }
 
     curStatusBox.innerText = "Running...";
